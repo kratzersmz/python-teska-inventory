@@ -1,0 +1,1 @@
+# bash-teska-inventory
