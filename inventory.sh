@@ -5,7 +5,7 @@ OPSICLI="opsi-admin -dS method"
 for client in $($OPSICLI getClientIds_list | sort ) ; do
            VALIDATEDMACS=
            HWINFOHASH=$($OPSICLI getHardwareInformation_hash $client)
-	   COMPUTERSYSTEM=$(echo "$HWINFOHASH" | grep COMPUTER_SYSTEM | grep -o -P "model': u'.{5,35}")
+	   COMPUTERSYSTEM=$(echo "$HWINFOHASH" | grep COMPUTER_SYSTEM | grep -o -P "model': u'.{5,35}" | cut -d, -f1) 
 	   #exit
            # get Serial
            HWSERIAL=$(echo "$HWINFOHASH" | grep -i chassis | cut -d':' -f4 | cut -d"'" -f2)
@@ -21,10 +21,10 @@ for client in $($OPSICLI getClientIds_list | sort ) ; do
            for i in "${my_array[@]}"
            do
                 if grep -q model <<<"$i"; then
-                        HWMODEL+=$(echo $(echo "$i" | grep -o -P "model': u'.{0,35}"))
+                        HWMODEL+=$(echo $(echo "$i" | grep -o -P "model': u'.{0,35}"))";"
                 fi
                 if grep -q model <<<"$i"; then
-                        HWMACS+=$(echo $(echo "$i" | grep -o -P "macAddress': u'.{0,17}"))
+                        HWMACS+=$(echo $(echo "$i" | grep -o -P "macAddress': u'.{0,18}"))";"
                 fi
            done
 
