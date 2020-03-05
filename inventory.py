@@ -11,9 +11,22 @@ clients = backend.host_getObjects(type="OpsiClient")
 
 for client in clients:
   ak =  backend.getHardwareInformation_hash(client.id)
-  seriennummer =  str(ak[u'COMPUTER_SYSTEM'][0][u'serialNumber'])
-  modell = str(ak[u'COMPUTER_SYSTEM'][0][u'model'])
-  pcname = str(ak[u'COMPUTER_SYSTEM'][0][u'name'])
+  # Checking
+  if (len(str(ak[u'CHASSIS'][0][u'serialNumber']))) == 0:
+    seriennummer = 'not available'
+  else:
+    seriennummer =  str(ak[u'CHASSIS'][0][u'serialNumber'])
+
+  if (len(str(ak[u'COMPUTER_SYSTEM'][0][u'model']))) == 0:
+    modell = 'not available'
+  else:
+    modell =  str(ak[u'COMPUTER_SYSTEM'][0][u'model'])
+
+  if (len(str(ak[u'COMPUTER_SYSTEM'][0][u'name']))) == 0:
+    pcname = 'not available'
+  else:
+    pcname =  str(ak[u'COMPUTER_SYSTEM'][0][u'name'])
+
   # network_dict no needed
   network_dict = {}
   print(pcname, end =";")
