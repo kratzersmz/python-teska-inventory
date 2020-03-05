@@ -10,8 +10,15 @@ backend = BackendManager()
 clients = backend.host_getObjects(type="OpsiClient")
 
 for client in clients:
+  # checking 1
+  test_list = ['w10adminvm','admin-pc','adminvm']
+  res = [ele for ele in test_list if(ele in client.id)] 
+  if res:
+    continue
+  
   ak =  backend.getHardwareInformation_hash(client.id)
-  # Checking
+  # Checking 2
+
   if (len(str(ak[u'CHASSIS'][0][u'serialNumber']))) == 0:
     seriennummer = 'not available'
   else:
@@ -22,14 +29,9 @@ for client in clients:
   else:
     modell =  str(ak[u'COMPUTER_SYSTEM'][0][u'model'])
 
-  if (len(str(ak[u'COMPUTER_SYSTEM'][0][u'name']))) == 0:
-    pcname = 'not available'
-  else:
-    pcname =  str(ak[u'COMPUTER_SYSTEM'][0][u'name'])
-
   # network_dict no needed
   network_dict = {}
-  print(pcname, end =";")
+  print(client.id, end =";")
   print(modell, end =';')
   print(seriennummer, end =';')
   for networkcontroller in ak[u'NETWORK_CONTROLLER']:
