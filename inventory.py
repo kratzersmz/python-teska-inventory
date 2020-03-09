@@ -17,27 +17,38 @@ for client in clients:
     continue
   
   ak =  backend.getHardwareInformation_hash(client.id)
+  #print(ak)
+  #exit
   # Checking 2
+  try:
+    seriennummer = (str(ak[u'CHASSIS'][0][u'serialNumber']))
+  except:
+    seriennummer =  'not available'
+    pass
 
-  if (len(str(ak[u'CHASSIS'][0][u'serialNumber']))) == 0:
-    seriennummer = 'not available'
-  else:
-    seriennummer =  str(ak[u'CHASSIS'][0][u'serialNumber'])
-
-  if (len(str(ak[u'COMPUTER_SYSTEM'][0][u'model']))) == 0:
+  try:
+    modell = (str(ak[u'COMPUTER_SYSTEM'][0][u'model']))
+  except:
     modell = 'not available'
-  else:
-    modell =  str(ak[u'COMPUTER_SYSTEM'][0][u'model'])
+    pass
 
   # network_dict no needed
   network_dict = {}
   print(client.id, end =";")
   print(modell, end =';')
   print(seriennummer, end =';')
-  for networkcontroller in ak[u'NETWORK_CONTROLLER']:
-    if (len(networkcontroller[u'vendorId'])) == 0:
-      continue
-    network_dict = {networkcontroller[u'model'], networkcontroller[u'macAddress']}
-    print(networkcontroller[u'model'], end =';')
-    print(networkcontroller[u'macAddress'], end =';')
+  
+#  for networkcontroller in ak[u'NETWORK_CONTROLLER']:
+  try:
+    for networkcontroller in ak[u'NETWORK_CONTROLLER']:
+      #print (str(ak[u'NETWORK_CONTROLLER']))
+      #exit
+      if (len(networkcontroller[u'vendorId'])) == 0:
+        continue
+      #network_dict = {networkcontroller[u'model'], networkcontroller[u'macAddress']}
+      print(networkcontroller[u'model'], end =';')
+      print(networkcontroller[u'macAddress'], end =';')
+  except:
+    print('No NetworkController found', end =';')
+    pass
   print('')
